@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { NgModel } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 class Chore{
     constructor(
       public title: String,
-      public assignedPerson: (String | undefined), // does not need an assigned person
-      public done: boolean,
+      public assignedPerson: String | undefined = "", // does not need an assigned person
+      public done: boolean
     ){}
 }
 @Component({
@@ -13,10 +15,14 @@ class Chore{
 })
 export class AppComponent {
   title = 'ToDo_List';
+  public chores: Chore[];
   public chore: Chore;
 
   constructor(){
-    this.chore = new Chore('clean', 'Dad', false);
+    this.chore = new Chore("clean", "Dad", false)
+    this.chores = new Array;
+    this.chores.fill(this.chore)
   }
+
 
 }

@@ -6,3 +6,10 @@ body {
  font-family: Roboto,
  "Helvetica Neue", sans-serif; }
 
+ body{
+  background: #F3F7FF;
+}
+
+h1{
+  padding:20px;
+}

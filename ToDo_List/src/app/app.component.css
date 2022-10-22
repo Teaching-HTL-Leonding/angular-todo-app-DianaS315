@@ -1,8 +1,12 @@
 
 .button-container {
   display: flex;
-  justify-content: center;
-  width: 1300px;
-  margin-top: -60px;
+  justify-content: right;
+  width: 650px;
+  margin-top: -30px;
+
+}
+tr{
+  width: 720px;
 }
 

@@ -1,28 +1,66 @@
+import { ASTWithName, core, ThisReceiver } from '@angular/compiler';
 import { Component, Input } from '@angular/core';
-import { NgModel } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
-class Chore{
-    constructor(
-      public title: String,
-      public assignedPerson: String | undefined = "", // does not need an assigned person
-      public done: boolean
-    ){}
+
+class Chore {
+  constructor(
+    public title: String = '',
+    public done: boolean = false,
+    public assignedPerson?: String // does not need an assigned person
+  ) {}
 }
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'ToDo_List';
   public chores: Chore[];
-  public chore: Chore;
+  public chore = new Chore('', false, '');
+  public filterUnfinishedTasks: boolean = false;
+  public filterAssignedPerson: String = '';
+  public isInEditMode: boolean = false;
 
-  constructor(){
-    this.chore = new Chore("clean", "Dad", false)
-    this.chores = new Array;
-    this.chores.fill(this.chore)
+  constructor() {
+    this.chores = [
+      new Chore('cook', true, 'Maria Musterfrau'),
+      new Chore('bake', false, 'Maria Musterfrau'),
+      new Chore('clean', false, 'Max Mustermann'),
+    ];
+  }
+  public createNewChore() {
+    this.chore = new Chore();
+    this.chores.push(this.chore);
   }
 
+  public finishedChore(finishedChore: Chore) {
+    for (let i = 0; i < this.chores.length; i++) {
+      if (this.chores[i + 1].title === finishedChore.title) {
+        this.chores[i + 1].done = !this.chores[i + 1].done;
+      }
+    }
+  }
 
+  public getChores(): Chore[] {
+    let result: Chore[] = this.chores;
+
+    if (this.filterAssignedPerson !== '') {
+      result = result.filter(
+        (chore) => chore.assignedPerson === this.filterAssignedPerson
+      );
+    }
+
+    if (this.filterUnfinishedTasks) {
+      result = result.filter((chore) => !chore.done);
+    }
+    return result;
+  }
+
+  public editMode() {
+    this.isInEditMode = !this.isInEditMode;
+  }
+
+  public resetFilter() {
+    this.filterAssignedPerson = '';
+    this.filterUnfinishedTasks = false;
+  }
 }

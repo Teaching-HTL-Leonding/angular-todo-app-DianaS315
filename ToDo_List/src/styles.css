@@ -4,12 +4,16 @@ body {
   max-width: 720px;
   margin: 0 auto;
  font-family: Roboto,
- "Helvetica Neue", sans-serif; }
-
- body{
-  background: #F3F7FF;
+ "Helvetica Neue", sans-serif;
+ background: #F3F7FF;
 }
 
-h1{
-  padding:20px;
+label{
+  padding-left: 20px;
 }
+
+input{
+  margin-right: 75px;
+}
+
+

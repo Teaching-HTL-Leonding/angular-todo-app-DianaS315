@@ -1,49 +1,97 @@
-
 <h1>To Do List</h1>
 
-<mat-card>
-  <mat-card-content>
-    <div class="button-container">
-      <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-    Chore:
-    <input
-      type="text"
-      id="title"
-      name="title"
-      [(ngModel)]="chore.title"
-      required
-      #chores="ngModel"
-    />
-    <p [hidden]="!chores.errors?.['required'] || chores.pristine">
-      This is a required field. Please enter information.
-    </p>
-  </mat-card-content>
-  <mat-card-content
-    >Person:
-    <input
-      type="text"
-      id="assignedPerson"
-      name="assignedPerson"
-      [(ngModel)]="chore.assignedPerson"
-    />
-  </mat-card-content>
-  <mat-card-actions>
-    <mat-checkbox id="done" name="done" [(ngModel)]="chore.done" color="primary">
-    </mat-checkbox>
-  </mat-card-actions>
-  <div class="button-container">
-    <button mat-mini-fab color="primary" aria-label="Example icon button with a plus one icon">
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
-</mat-card>
-<br/>
+<mat-label>Only show unfinished tasks:</mat-label>
+<mat-checkbox
+  color="primary"
+  id="filterUnfinishedTasks"
+  name="filterUnfinishedTasks"
+  [(ngModel)]="this.filterUnfinishedTasks"
+></mat-checkbox>
 
-<!-- <button mat-button color="primary">Add Chore</button> -->
+<label>Filter for Person: </label>
+<input
+  type="text"
+  id="filterAssignedPerson"
+  name="filterAssignedPerson"
+  [(ngModel)]="this.filterAssignedPerson"
+/>
+
+<button mat-raised-button color="primary" (click)="this.resetFilter()">
+  Reset Filter
+</button>
+
+<table>
+  <tbody>
+    <tr *ngFor="let chore of this.getChores(); let ix = index">
+      <mat-card>
+        <mat-card-content>
+          <div class="button-container">
+            <button
+              type="button"
+              id="isInEditMode"
+              name="isInEditMode"
+              (click)="this.editMode()"
+              mat-mini-fab
+              color="primary"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+
+          Chore:
+          <input
+            type="text"
+            [id]="'title' + ix"
+            [name]="'title' + ix"
+            [(ngModel)]="this.chore.title"
+            required
+            #myChores="ngModel"
+          />
+          <p [hidden]="!myChores.errors?.['required']">
+            This is a required field. Please enter information.
+          </p>
+        </mat-card-content>
+
+        <mat-card-content
+          >Person:
+          <input
+            type="text"
+            [id]="'assignedPerson' + ix"
+            [name]="'assignedPerson' + ix"
+            [(ngModel)]="this.chore.assignedPerson"
+          />
+        </mat-card-content>
+
+        <mat-checkbox
+          color="primary"
+          id="done"
+          name="done"
+          [(ngModel)]="this.chore.done"
+          (click)="this.finishedChore(this.chore)"
+        >
+        </mat-checkbox>
+
+        <div class="button-container">
+          <button
+            type="button"
+            [id]="'delete' + ix"
+            [name]="'delete' + ix"
+            [disabled]="!this.isInEditMode"
+            (click)="this.chores.splice(ix, 1)"
+            mat-mini-fab
+            color="primary"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+      <br />
+    </tr>
+  </tbody>
+</table>
+
+<button mat-raised-button color="primary" (click)="this.createNewChore()">
+  Add
+</button>
 
 <router-outlet></router-outlet>
-
-<p>{{ chore | json }}</p>
